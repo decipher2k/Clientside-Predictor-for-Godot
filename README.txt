@@ -3,6 +3,8 @@ Character synchronization using clientside prediction for Godot 3D network games
 
 This asset allows you to implement clientside prediction with just a few lines of code per entity.
 
+Do youn need an 3D artist or a gamedev? In that case, please send a mail to dennis@heine.codes
+
 Usage:
 get_parent().find_node("DummyCollection",true,false).get_node("Dummy").spawn_dummy(str(playerId),Vector3(0,0,0),Quat(0.0,0.0,0.0,0.0),"")
 get_parent().find_node("ClientsidePrediction",true,false).initBegin(0.4,"Player","DummyCollection", 30.0,Vector3(0,0,0),"Camera",5.0,false,false)
