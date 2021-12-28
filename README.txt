@@ -12,7 +12,7 @@ get_parent().find_node("ClientsidePrediction",true,false).initBegin(0.4,"Player"
 In order to implement it into the Godot Dedicated Server template, which can be found at the Godot asset store, please add these functions the end of the ServerGame.md script,
 replacing the content of the spawn_player function.
 
-Each Entity (for example each player entity, each bullet entity etc - not their instances!) has to have its own ClientsidePrediction node (you will have to rename it in order to use more than one entity.)
+Each entity (for example each player entity, each bullet entity etc - not their instances!) has to have its own ClientsidePrediction node (you will have to rename it in order to use more than one entity.)
 
 
 ==== ClientsidePredictionDummy.gd====
