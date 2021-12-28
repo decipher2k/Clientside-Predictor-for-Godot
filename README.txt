@@ -16,6 +16,7 @@ That node should also be positions outside the walkable terrain, as it could cau
 ToDo:
 -individual nodes per player, if possible. If not, individual meshes.
 -callback functions for the "Dummy" nodes
+-duplicate the script for dummy instantiation and make the duplicate only callable by the network server.
 
 ==== ClientsidePredictionDummy.gd====
 (attached to the Dummy node, which has to be a subnode of the DummyCollection)
