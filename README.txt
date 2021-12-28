@@ -18,6 +18,7 @@ ToDo:
 -callback functions for the "Dummy" nodes
 -duplicate the script for dummy instantiation and make the duplicate only callable by the network server.
 -lock rotation
+-add a function to modify speed during runtime withouth restart
 
 ==== ClientsidePredictionDummy.gd====
 (attached to the Dummy node, which has to be a subnode of the DummyCollection)
