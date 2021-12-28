@@ -13,6 +13,10 @@ Each entity (for example each player entity, each bullet entity etc - not their 
 To modify the avatar the user sees, the corresponding node should be attached to the node called "Dummy".
 That node should also be positions outside the walkable terrain, as it could cause unwanted collissions.
 
+ToDo:
+-individual nodes per player, if possible. If not, individual meshes.
+-callback functions for the "Dummy" nodes
+
 ==== ClientsidePredictionDummy.gd====
 (attached to the Dummy node, which has to be a subnode of the DummyCollection)
 #	Note: 	This script should be attached to the dummy of the corresponding chracter node.
