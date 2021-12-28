@@ -10,7 +10,7 @@ get_parent().find_node("DummyCollection",true,false).get_node("Dummy").spawn_dum
 get_parent().find_node("ClientsidePrediction",true,false).initBegin(0.4,"Player","DummyCollection", 30.0,Vector3(0,0,0),"Camera",5.0,false,false)
 
 Each entity (for example each player entity, each bullet entity etc - not their instances!) has to have its own ClientsidePrediction node (you will have to rename it in order to use more than one entity.)
-To modify the avatar the user sees, the corresponding mesh should be attached to the node called "Dummy".
+To modify the avatar the user sees, the corresponding node should be attached to the node called "Dummy".
 That node should also be positions outside the walkable terrain, as it could cause unwanted collissions.
 
 ==== ClientsidePredictionDummy.gd====
