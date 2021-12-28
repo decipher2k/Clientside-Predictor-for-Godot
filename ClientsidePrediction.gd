@@ -21,7 +21,7 @@
 #    Version 3 der Lizenz oder (nach Ihrer Wahl) jeder neueren
 #    veröffentlichten Version, weiter verteilen und/oder modifizieren.
 #
-#    Predictor wird in der Hoffnung, dass es nützlich sein wird, aber
+#    Clientside Predictor wird in der Hoffnung, dass es nützlich sein wird, aber
 #    OHNE JEDE GEWÄHRLEISTUNG, bereitgestellt; sogar ohne die implizite
 #    Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
 #    Siehe die GNU General Public License für weitere Details.
