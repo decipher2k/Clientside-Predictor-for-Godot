@@ -19,7 +19,7 @@ ToDo:
 
 ==== ClientsidePredictionDummy.gd====
 (attached to the Dummy node, which has to be a subnode of the DummyCollection)
-#	Note: 	This script should be attached to the dummy of the corresponding chracter node.
+#	Note: 	This script should be attached to the dummy of the corresponding entity.
 #
 #			The dummy node has got to have this script attached,
 #			and it has to be a child node of the _collectionNode.
@@ -43,7 +43,7 @@ ToDo:
 
 #==== ClientsidePrediction.gd====
 (Attached to the main node of the clientside prediction, most likely labled ClientsidePrediction)
-#	Note: 	This script should be attached to the _characterNode.
+#	Note: 	This script should be attached to the _collectionNode.
 #
 #			The dummy node has got to have the script ClientsidePredictionDummy.gd attached,
 #			and it has to be a child node of the _collectionNode.
