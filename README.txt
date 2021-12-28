@@ -14,8 +14,6 @@ replacing the content of the spawn_player function.
 
 Each entity (for example each player entity, each bullet entity etc - not their instances!) has to have its own ClientsidePrediction node (you will have to rename it in order to use more than one entity.)
 
-Todo: replace the fixed location parameter with move_and_collide to apply collission detection (as a serverside sanity-check)
-
 ==== ClientsidePredictionDummy.gd====
 (attached to the Dummy node, which has to be a subnode of the DummyCollection)
 #	Note: 	This script should be attached to the dummy of the corresponding chracter node.
