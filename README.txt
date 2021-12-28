@@ -9,9 +9,6 @@ Usage:
 get_parent().find_node("DummyCollection",true,false).get_node("Dummy").spawn_dummy(str(playerId),Vector3(0,0,0),Quat(0.0,0.0,0.0,0.0),"")
 get_parent().find_node("ClientsidePrediction",true,false).initBegin(0.4,"Player","DummyCollection", 30.0,Vector3(0,0,0),"Camera",5.0,false,false)
 
-In order to implement it into the Godot Dedicated Server template, which can be found at the Godot asset store, please add these functions the end of the ServerGame.md script,
-replacing the content of the spawn_player function.
-
 Each entity (for example each player entity, each bullet entity etc - not their instances!) has to have its own ClientsidePrediction node (you will have to rename it in order to use more than one entity.)
 
 Todo: replace the fixed location parameter with move_and_collide to apply collission detection (as a serverside sanity-check)
