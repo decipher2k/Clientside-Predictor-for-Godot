@@ -216,7 +216,10 @@ func updatePos(playerID: String, delta):
 					var newSpeed=(speed*10.0)/node.posExtrapolated.distance_to(currentPos)
 					var deltaPos=node.posExtrapolated-currentPos
 					
-					newPos=(currentPos+(newSpeed*deltaPos)*delta)
+					if(!node.test_move (node.globglobal_transform, deltaPos)):
+						newPos=(currentPos+(newSpeed*deltaPos)*delta)
+					else:
+						newPos=node.posExtrapolated
 				else:
 					newPos=node.posExtrapolated
 					

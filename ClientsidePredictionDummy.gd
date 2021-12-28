@@ -75,55 +75,39 @@ func playAnimation(player:String,animation:String, id,once:bool):
 			at.oneshot_node_start(id)
 	else:
 		n.play(animation)
-		
 
 func spawn_dummy(var _idNode:String, var pos:Vector3, var rota:Quat,var _AnimationTreeName):
-
-	var node: Spatial
-	node=duplicate()	
-	node.name=_idNode
-	get_parent().add_child(node)	
-	node.lastRotation=rota
-	node.posLast=pos
-	posNetworkTargeted=pos
-	posExtrapolated=pos
-	node._pos=pos
-	node._rota=rota
-
-	node.idNode=_idNode
-	node.AnimationTreeName=_AnimationTreeName
-	
+	rpc_id(1,"remote_spawn_dummy",_idNode,pos,rota,_AnimationTreeName)	
+		
 func _process(delta):
-	if(idNode!="" && !spawned):
-		spawned=true
-		rpc_id(1,"remote_spawn_dummy",idNode,_pos,_rota,AnimationTreeName)
+	pass
 		
 master func remote_spawn_dummy(var idNode:String, var pos:Vector3, var rota:Quat,var _AnimationTreeName):
 		
-	if(get_parent().get_node(idNode)==null):
-		var s=get_script()
-		var node:Spatial=self.duplicate()	
+	if(get_parent().find_node(idNode,false,false)==null):
+		var node=self.duplicate()	
+		node.show()
 		node.name=str(idNode)
 		get_parent().add_child(node)		
 		node.lastRotation=rota
 		node.posLast=pos
-		posNetworkTargeted=pos
-		posExtrapolated=pos
-		node.AnimationTreeName=_AnimationTreeName
-			
+		node.posNetworkTargeted=pos
+		node.posExtrapolated=pos
+		node.AnimationTreeName=_AnimationTreeName		
+
 		rpc("spawn_dummy_client",idNode,1,pos,rota, _AnimationTreeName)
-		
+
 puppet func spawn_dummy_client(playerId:String, order:int, var pos:Vector3, var rota:Quat,var _AnimationTreeName):
-	if(get_parent().get_node(idNode)==null):
+	if(get_parent().find_node(idNode,false,false)==null &&playerId.to_int()!= get_tree().get_network_unique_id()):
 		var node:Spatial=self.duplicate()
+		node.show()
 		var s:Script=get_script()
 		get_parent().add_child(node)		
 		node.name=str(playerId)	
 		node.lastRotation=rota
 		node.posLast=pos
-		posNetworkTargeted=pos
-		posExtrapolated=pos
-		node.AnimationTreeName=_AnimationTreeName
+		node.posNetworkTargeted=pos
+		node.posExtrapolated=pos
 
 func _ready():
 	pass # Replace with function body.
