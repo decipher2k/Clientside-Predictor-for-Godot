@@ -47,6 +47,17 @@ func _ready():
 func _process(delta):
 	pass
 
+
+#==== DummySpawner.gd====
+#	Note: 	This script should be attached to a seperate node on the server only.
+
+
+#----func remote_spawn_dummy(var idNode:String, var pos:Vector3, var rota:Quat,var _AnimationTreeName):----
+#	idNode: Unique ID of the character instance per player
+#	pos:				Start position
+#	rota:				Start rotation
+#	_AnimationTreeName:	Name of the AnimationTree (can be "" when not using Animation Trees
+
 func remote_spawn_dummy(var idNode:String, var pos:Vector3, var rota:Quat,var _AnimationTreeName):
 
 	if(get_node("/root").find_node("DummyCollection",true,false).find_node(idNode,false,false)==null):
