@@ -18,6 +18,7 @@ ToDo:
 -callback functions for the "Dummy" nodes
 -lock rotation
 -add a function to modify speed during runtime withouth restart
+-add animation and sound
 
 Update:
 v0.2: -Seperated client scene vom server scene.
