@@ -36,7 +36,7 @@ Node Structure:
 ===Server===
 -root
 --"Player" (type: KineticBody)
---"DummySpawner" (type: Spatial" DummySpawner.gd
+--"DummySpawner" (type: Spatial") DummySpawner.gd
 --"ClientsidePrediction" (type: Spatial) ClientsidePrediction.gd
   (name can be changed)
 ----"DummyFunctions" (type: Spatial) 
@@ -58,7 +58,7 @@ ToDo:
 =================================
 
 Update:
-v0.2: -Seperated client scene vom server scene.
+v0.2: -Seperated client scene from server scene.
        The server scene now has got to have a DummySpawner.gd node attached.   
       -Added demo scenes. (You will have to add an own connection handling part, which calls the DummySpawner, though.
       				The player controller for the "Player" node also has to be implemented, it is not included.)
