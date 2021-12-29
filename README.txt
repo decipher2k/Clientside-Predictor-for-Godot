@@ -36,7 +36,7 @@ Node Structure:
 ===Server===
 -root
 --"Player" (type: KineticBody)
---"DummySpawner" (type: Spatial") DummySpawner.gd
+--"DummySpawner" (type: Spatial) DummySpawner.gd
 --"ClientsidePrediction" (type: Spatial) ClientsidePrediction.gd
   (name can be changed)
 ----"DummyFunctions" (type: Spatial) 
