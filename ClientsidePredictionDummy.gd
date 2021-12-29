@@ -46,25 +46,6 @@ var _pos
 var _rota
 var AnimationTreeName
 
-#==== ClientsidePredictionDummy.gd====
-#	Note: 	This script should be attached to the dummy of the corresponding chracter node.
-#
-#			The dummy node has got to have this script attached,
-#			and it has to be a child node of the _collectionNode.
-#			To spawn an instance of a character, call the dummy node's spawn_dummy function from the server
-
-#----func spawn_dummy(var idNode:String, var pos:Vector3, var rota:Quat,var _AnimationTreeName):----
-#	idNode: Unique ID of the character instance per player
-#	pos:				Start position
-#	rota:				Start rotation
-#	_AnimationTreeName:	Name of the AnimationTree (can be "" when not using Animation Trees
-
-#----func playAnimation(player:String,animation:String, id,once:bool):----
-#	player: 	The AnimationPlayer
-#	animation:	The Animation node
-#	id:			The id of <something animation specific>
-#	once:		Play only once
-
 
 puppet func playAnimation(player:String,animation:String, id,once:bool):
 	
