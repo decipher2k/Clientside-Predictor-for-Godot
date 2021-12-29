@@ -26,6 +26,7 @@ v0.2: -Seperated client scene vom server scene.
       -Added demo scenes. (You will have to add an own connection handling part, which calls the DummySpawner, though.
       				The player controller for the "Player" node also has to be implemented, it is not included.)
 v0.2.1 -added some sanity checks
+v0.2.2 -parametrized ClientsidePrediction.tscn name in DummySpawner 
 
 #==== DummySpawner.gd====
 #	Note: 	This script should be attached to a seperate node on the server only.
