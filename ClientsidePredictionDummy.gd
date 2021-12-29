@@ -65,6 +65,22 @@ var AnimationTreeName
 #	id:			The id of <something animation specific>
 #	once:		Play only once
 
+
+puppet func playAnimation(player:String,animation:String, id,once:bool):
+	
+	var n:Node=find_node(player,true,false)
+	if(n.is_class("AnimationTreePlayer")):
+		var at:AnimationTree=n
+		at.animation_node_set_animation (id, find_node(animation,true,false))		
+		if(once):
+			at.oneshot_node_start(id)
+	else:
+		n.play(animation)
+
+#Warning! This should be safe concerning the specs. Reomtely injecting code is _allways_ dangerous though.
+#Allways delete this function unless you know what you are doing.
+	# Called when the node enters the scene tree for the first time.
+
 puppet func callFunction(var functionNode, var functionName):
 	var n:Node=get_parent().get_node("DummyFunctions").find_node(functionNode,true,false)
 	var ref = funcref(n, functionName)
