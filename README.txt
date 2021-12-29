@@ -18,6 +18,7 @@ ToDo:
 -callback functions for the "Dummy" nodes
 -lock rotation
 -add a function to modify speed during runtime withouth restart
+-add animation and sound
 
 Update:
 v0.2: -Seperated client scene vom server scene.
@@ -25,26 +26,18 @@ v0.2: -Seperated client scene vom server scene.
       -Added demo scenes. (You will have to add an own connection handling part, which calls the DummySpawner, though.
       				The player controller for the "Player" node also has to be implemented, it is not included.)
 v0.2.1 -added some sanity checks
+v0.2.2 -parametrized ClientsidePrediction.tscn name in DummySpawner 
 
-==== ClientsidePredictionDummy.gd====
-(attached to the Dummy node, which has to be a subnode of the DummyCollection)
-#	Note: 	This script should be attached to the dummy of the corresponding entity.
-#
-#			The dummy node has got to have this script attached,
-#			and it has to be a child node of the _collectionNode.
-#			To spawn an instance of a character, call the dummy node's spawn_dummy function from the server
+#==== DummySpawner.gd====
+#	Note: 	This script should be attached to a seperate node on the server only.
 
-#----func spawn_dummy(var idNode:String, var pos:Vector3, var rota:Quat,var _AnimationTreeName):----
-#	idNode: Unique ID of the character instance per player (network id)
+
+#----func remote_spawn_dummy(var idNode:String, var pos:Vector3, var rota:Quat,var _AnimationTreeName,  var _collectionName):----
+#	idNode: Unique ID of the character instance per player
 #	pos:				Start position
 #	rota:				Start rotation
 #	_AnimationTreeName:	Name of the AnimationTree (can be "" when not using Animation Trees
-
-#----func playAnimation(player:String,animation:String, id,once:bool):----
-#	player: 	The AnimationPlayer
-#	animation:	The Animation node
-#	id:			The id of <something animation specific>
-#	once:		Play only once
+#	_collectionName:	Name of the node with the ClientsidePrediction.tscn
 	
 
 
@@ -69,7 +62,7 @@ v0.2.1 -added some sanity checks
 #	_target: 		target position when using direct position instead of character sync
 #	_rotation:		target rotation when using direct position instead of character sync
 #	_clamping:		distance from extrapolated position to current position at which to snap
-#	_useKeyFrames:	should root motion be applied when animating?
+#	_useKeyFrames:		should root motion be applied when animating?
 #	_useTarget:		use fixed target instead of character synchronization
 
 
