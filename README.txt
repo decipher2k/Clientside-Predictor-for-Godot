@@ -24,6 +24,7 @@ Node Structure:
 ===Client===
 -root
 --"Player" (type: KineticBody) - has to have the player controller script attached
+   (name can be changed)
 --"ClientsidePrediction" (type: Spatial) ClientsidePrediction.gd
   (name can be changed)
 ----"DummyFunctions" (type: Spatial) 
@@ -36,6 +37,7 @@ Node Structure:
 ===Server===
 -root
 --"Player" (type: KineticBody)
+  (name can be changed)
 --"DummySpawner" (type: Spatial) DummySpawner.gd
 --"ClientsidePrediction" (type: Spatial) ClientsidePrediction.gd
   (name can be changed)
