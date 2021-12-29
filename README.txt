@@ -41,7 +41,7 @@ Node Structure:
   (name can be changed)
 ----"DummyFunctions" (type: Spatial) 
      (feature not yet implemented)
-----""DummyCollection" (type: Spatial) 
+----"DummyCollection" (type: Spatial) 
 ------"Dummy" (type: KineticBody) ClientsidePredictionDummy.gd
 --------"MeshInstance" (type: MeshInstance)
 --------"CollissionShape" (type: CollissionShape)
