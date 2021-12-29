@@ -9,7 +9,7 @@ Do youn need an 3D artist or a gamedev? In that case, please send a mail to gith
 =================================
 
 
-Usage:
+Usage (both functions have to be called from the server):
 get_node("/root").find_node("DummySpawner",true,false).remote_spawn_dummy(str(playerId),Vector3(0,0,0),Quat(0.0,0.0,0.0,0.0),"","ClientsidePrediction")
 get_node("/root").find_node("ClientsidePrediction",true,false).initBegin(0.4,"Player","DummyCollection", 30.0,target,"Camera",5.0,false,false)
 	

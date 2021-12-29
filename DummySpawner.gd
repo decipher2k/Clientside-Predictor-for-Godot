@@ -61,18 +61,18 @@ func _process(delta):
 
 func remote_spawn_dummy(var idNode:String, var pos:Vector3, var rota:Quat,var _AnimationTreeName, var _collectionName):
 
-	if(get_node("/root").find_node(_collectionName,true,false).get_node("DummyCollection").get_node_or_null(idNode)==null):
-		var node=get_node("/root").find_node(_collectionName,true,false).get_node("DummyCollection").get_node("Dummy").duplicate()	
+	if(get_node("/root").find_node(_collectionName,true,false).get_node_or_null(idNode)==null && idNode.to_int()!=get_tree().get_network_unique_id()):
+		var node=get_node("/root").find_node(_collectionName,true,false).get_node("Dummy").duplicate()	
 		node.show()
 		node.name=str(idNode)
-		get_node("/root").find_node(_collectionName,true,false).get_node("DummyCollection").add_child(node)		
+		get_node("/root").find_node(_collectionName,true,false).add_child(node)		
 		node.lastRotation=rota
 		node.posLast=pos
 		node.posNetworkTargeted=pos
 		node.posExtrapolated=pos
 		node.AnimationTreeName=_AnimationTreeName		
 
-		get_node("/root").find_node(_collectionName,true,false).get_node("DummyCollection").get_node("Dummy").rpc("spawn_dummy_client",idNode,1,pos,rota, _AnimationTreeName)
+		get_node("/root").find_node(_collectionName,true,false).get_node("Dummy").rpc("spawn_dummy_client",idNode,1,pos,rota, _AnimationTreeName)
 
 
 

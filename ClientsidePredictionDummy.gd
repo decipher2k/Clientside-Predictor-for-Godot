@@ -51,27 +51,32 @@ var AnimationTreeName
 #			and it has to be a child node of the _collectionNode.
 #			To spawn an instance of a character, call the DummySpawner node's remote_spawn_dummy function from the server
 
-puppet func playAnimation(player:String,animation:String, id,once:bool):
-	
-	var n:Node=find_node(player,true,false)
-	if(n.is_class("AnimationTreePlayer")):
-		var at:AnimationTree=n
-		at.animation_node_set_animation (id, find_node(animation,true,false))		
+func playAnimation(animationPlayer,animationName,animationNodeId,once):	
+	if(!self.is_class("ClientsidePredictionDummy")):
+		pass
+	var playerNode:Node =find_node(animationPlayer,true,false)	
+	if(playerNode.is_class("AnimationTreePlayer")):
+		playerNode.animation_node_set_animation (animationNodeId, find_node(animationName,true,false))		
 		if(once):
-			at.oneshot_node_start(id)
+			playerNode.oneshot_node_start(animationNodeId)
 	else:
-		n.play(animation)
+		if(playerNode.is_class("AnimationPlayer")):
+			var prevAnimation=playerNode.get_queue()[playerNode.get_queue().size()]
+			playerNode.play(animationName)
+			playerNode.queue(prevAnimation)
+		else:
+			pass
 
 #Warning! This should be safe concerning the specs. Reomtely injecting code is _allways_ dangerous though.
 #Delete this function if you are unsure.
 
-puppet func callFunction(var functionNode, var functionName):
-	var n:Node=get_parent().get_node("DummyFunctions").find_node(functionNode,true,false)
-	var ref = funcref(n, functionName)
-	ref.call_func()
+#puppet func callFunction(var functionNode, var functionName):
+#	var n:Node=get_parent().get_node("DummyFunctions").find_node(functionNode,true,false)
+#	var ref = funcref(n, functionName)
+#	ref.call_func()
 
 puppet func spawn_dummy_client(playerId:String, order:int, var pos:Vector3, var rota:Quat,var _AnimationTreeName):
-	if(get_parent().find_node(playerId,false,false)==null &&playerId.to_int()!= get_tree().get_network_unique_id()):
+	if(get_parent().get_node_or_null(playerId)==null &&playerId.to_int()!= get_tree().get_network_unique_id()):
 		var node:Spatial=self.duplicate()
 		node.show()
 		var s:Script=get_script()
