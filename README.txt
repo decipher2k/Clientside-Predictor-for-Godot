@@ -24,6 +24,7 @@ v0.2: -Seperated client scene vom server scene.
        The server scene now has got to have a DummySpawner.gd node attached.   
       -Added demo scenes. (You will have to add an own connection handling part, which calls the DummySpawner, though.
       				The player controller for the "Player" node also has to be implemented, it is not included.)
+v0.2.1 -added some sanity checks
 
 ==== ClientsidePredictionDummy.gd====
 (attached to the Dummy node, which has to be a subnode of the DummyCollection)
