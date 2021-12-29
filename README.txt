@@ -16,9 +16,12 @@ That node should also be positions outside the walkable terrain, as it could cau
 ToDo:
 -individual nodes per player, if possible. If not, individual meshes.
 -callback functions for the "Dummy" nodes
--duplicate the script for dummy instantiation and make the duplicate only callable by the network server.
 -lock rotation
 -add a function to modify speed during runtime withouth restart
+
+Update:
+v0.2: Seperated client scene vom server scene.
+      The server scene now has got to have a DummySpawner.gd node attached.   
 
 ==== ClientsidePredictionDummy.gd====
 (attached to the Dummy node, which has to be a subnode of the DummyCollection)
