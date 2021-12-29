@@ -3,7 +3,7 @@ Character synchronization using clientside prediction for Godot 3D network games
 
 This asset allows you to implement clientside prediction with just a few lines of code per entity.
 
-Do youn need an 3D artist or a gamedev? In that case, please send a mail to dennis@heine.codes
+Do youn need an 3D artist or a gamedev? In that case, please send a mail to github@decipher2k.ml
 
 
 =================================
