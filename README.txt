@@ -10,9 +10,9 @@ Do youn need an 3D artist or a gamedev? In that case, please send a mail to gith
 
 
 Usage:
-get_parent().find_node("DummyCollection",true,false).get_node("Dummy").spawn_dummy(str(playerId),Vector3(0,0,0),Quat(0.0,0.0,0.0,0.0),"")
-get_parent().find_node("ClientsidePrediction",true,false).initBegin(0.4,"Player","DummyCollection", 30.0,Vector3(0,0,0),"Camera",5.0,false,false)
-
+get_node("/root").find_node("DummySpawner",true,false).remote_spawn_dummy(str(playerId),Vector3(0,0,0),Quat(0.0,0.0,0.0,0.0),"","ClientsidePrediction")
+get_node("/root").find_node("ClientsidePrediction",true,false).initBegin(0.4,"Player","DummyCollection", 30.0,target,"Camera",5.0,false,false)
+	
 Each entity (for example each player entity, each bullet entity etc - not their instances!) has to have its own ClientsidePrediction node (you will have to rename it in order to use more than one entity.)
 To modify the avatar the user sees, the corresponding node should be attached to the node called "Dummy".
 That node should be positioned outside the walkable terrain, as it could cause unwanted collissions.
