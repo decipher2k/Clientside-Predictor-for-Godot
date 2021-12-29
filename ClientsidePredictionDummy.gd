@@ -21,7 +21,7 @@
 #    Version 3 der Lizenz oder (nach Ihrer Wahl) jeder neueren
 #    veröffentlichten Version, weiter verteilen und/oder modifizieren.
 #
-#    Clientside Predictor wird in der Hoffnung, dass es nützlich sein wird, aber
+#    Predictor wird in der Hoffnung, dass es nützlich sein wird, aber
 #    OHNE JEDE GEWÄHRLEISTUNG, bereitgestellt; sogar ohne die implizite
 #    Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
 #    Siehe die GNU General Public License für weitere Details.
@@ -30,7 +30,7 @@
 #    Programm erhalten haben. Wenn nicht, siehe <https://www.gnu.org/licenses/>.
 
 
-extends Spatial
+extends KinematicBody
 class_name ClientsidePredictionDummy
 
 var posLast: Vector3
@@ -65,40 +65,13 @@ var AnimationTreeName
 #	id:			The id of <something animation specific>
 #	once:		Play only once
 
-func playAnimation(player:String,animation:String, id,once:bool):
-	
-	var n:Node=find_node(player,true,false)
-	if(n.is_class("AnimationTreePlayer")):
-		var at:AnimationTree=n
-		at.animation_node_set_animation (id, find_node(animation,true,false))		
-		if(once):
-			at.oneshot_node_start(id)
-	else:
-		n.play(animation)
-
-func spawn_dummy(var _idNode:String, var pos:Vector3, var rota:Quat,var _AnimationTreeName):
-	rpc_id(1,"remote_spawn_dummy",_idNode,pos,rota,_AnimationTreeName)	
-		
-func _process(delta):
-	pass
-		
-master func remote_spawn_dummy(var idNode:String, var pos:Vector3, var rota:Quat,var _AnimationTreeName):
-		
-	if(get_parent().find_node(idNode,false,false)==null):
-		var node=self.duplicate()	
-		node.show()
-		node.name=str(idNode)
-		get_parent().add_child(node)		
-		node.lastRotation=rota
-		node.posLast=pos
-		node.posNetworkTargeted=pos
-		node.posExtrapolated=pos
-		node.AnimationTreeName=_AnimationTreeName		
-
-		rpc("spawn_dummy_client",idNode,1,pos,rota, _AnimationTreeName)
+puppet func callFunction(var functionNode, var functionName):
+	var n:Node=get_parent().get_node("DummyFunctions").find_node(functionNode,true,false)
+	var ref = funcref(n, functionName)
+	ref.call_func()
 
 puppet func spawn_dummy_client(playerId:String, order:int, var pos:Vector3, var rota:Quat,var _AnimationTreeName):
-	if(get_parent().find_node(idNode,false,false)==null &&playerId.to_int()!= get_tree().get_network_unique_id()):
+	if(get_parent().find_node(playerId,false,false)==null &&playerId.to_int()!= get_tree().get_network_unique_id()):
 		var node:Spatial=self.duplicate()
 		node.show()
 		var s:Script=get_script()
