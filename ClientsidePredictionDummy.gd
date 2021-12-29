@@ -46,6 +46,10 @@ var _pos
 var _rota
 var AnimationTreeName
 
+#
+#			The dummy node has got to have this script attached,
+#			and it has to be a child node of the _collectionNode.
+#			To spawn an instance of a character, call the DummySpawner node's remote_spawn_dummy function from the server
 
 puppet func playAnimation(player:String,animation:String, id,once:bool):
 	
