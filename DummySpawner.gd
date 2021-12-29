@@ -60,7 +60,7 @@ func _process(delta):
 
 func remote_spawn_dummy(var idNode:String, var pos:Vector3, var rota:Quat,var _AnimationTreeName):
 
-	if(get_node("/root").find_node("DummyCollection",true,false).find_node(idNode,false,false)==null):
+	if(get_node("/root").find_node("DummyCollection",true,false).get_node(idNode)==null):
 		var node=get_node("/root").find_node("DummyCollection",true,false).get_node("Dummy").duplicate()	
 		node.show()
 		node.name=str(idNode)

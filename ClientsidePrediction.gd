@@ -220,7 +220,7 @@ func updatePos(playerID: String, delta):
 					if(node.test_move(node.global_transform, deltaPos)):
 						newPos=(currentPos+(newSpeed*deltaPos)*delta)
 					else:
-						newPos=node.posExtrapolated
+						newPos=currentPos
 				else:
 					newPos=node.posExtrapolated
 					
