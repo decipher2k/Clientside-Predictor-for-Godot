@@ -259,6 +259,8 @@ func process_movement():
 master func network_update1(pos: Vector3,id: int, rotation):	
 	if(!get_node("/root").find_node(collectionNodeName,true,false).is_class("ClientsidePrediction")):
 		pass
+	if(!get_node("/root").find_node(collectionNodeName,true,false).get_node(str(id)).is_class("ClientsidePredictionDummy")):
+		pass
 	get_node("/root").find_node(collectionNodeName,true,false).get_node(str(id)).global_transform.origin=pos
 	if(modeIsCharacterSync):
 		get_node("/root").find_node(collectionNodeName,true,false).get_node(str(id)).global_transform.basis=Basis(rotation)
