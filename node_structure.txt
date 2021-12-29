@@ -1,3 +1,4 @@
+
 Node Structure:
 
 ===Client===
@@ -15,13 +16,12 @@ Node Structure:
 ===Server===
 -root
 --"Player" (type: KineticBody)
---"DummySpawner" (type: Spatial" DummySpawner.gd
+--"DummySpawner" (type: Spatial) DummySpawner.gd
 --"ClientsidePrediction" (type: Spatial) ClientsidePrediction.gd
   (name can be changed)
 ----"DummyFunctions" (type: Spatial) 
      (feature not yet implemented)
-----""DummyCollection" (type: Spatial) 
+----"DummyCollection" (type: Spatial) 
 ------"Dummy" (type: KineticBody) ClientsidePredictionDummy.gd
 --------"MeshInstance" (type: MeshInstance)
 --------"CollissionShape" (type: CollissionShape)
-
