@@ -70,8 +70,6 @@ v0.2.2 -parametrized ClientsidePrediction.tscn name in DummySpawner
 
 #==== DummySpawner.gd====
 #	Note: 	This script should be attached to a seperate node on the server only.
-
-
 #----func remote_spawn_dummy(var idNode:String, var pos:Vector3, var rota:Quat,var _AnimationTreeName,  var _collectionName):----
 #	idNode: Unique ID of the character instance per player
 #	pos:				Start position
@@ -89,8 +87,6 @@ v0.2.2 -parametrized ClientsidePrediction.tscn name in DummySpawner
 #			and it has to be a child node of the _collectionNode.
 #			To spawn an instance of a character, call the dummy node's spawn_dummy function from the server
 #			The rotational node should be the node from which to get the rotation, for example the Camera node		
-
-#	Entry point:
 #	
 #----func initBegin(var _speed:float, var _characterNode, var _collectionNode,  var _tickrate, _targetPosition, var _rotator, var _clamping,_useKeyFrames,_useTarget):
 #	_speed: 		speed of interpolation
