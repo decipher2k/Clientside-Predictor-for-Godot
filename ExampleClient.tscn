@@ -3,7 +3,7 @@
 [ext_resource path="res://default_env.tres" type="Environment" id=1]
 [ext_resource path="res://player/Player.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Materials/Grid.material" type="Material" id=3]
-[ext_resource path="res://ClientsidePrediction/ClientsidePredictionServer.tscn" type="PackedScene" id=4]
+[ext_resource path="res://ClientsidePrediction/ClientsidePrediction.tscn" type="PackedScene" id=4]
 
 [sub_resource type="BoxShape" id=2]
 

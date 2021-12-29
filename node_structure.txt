@@ -1,0 +1,27 @@
+Node Structure:
+
+===Client===
+-root
+--"Player" (type: KineticBody) - has to have the player controller script attached
+--"ClientsidePrediction" (type: Spatial) ClientsidePrediction.gd
+  (name can be changed)
+----"DummyFunctions" (type: Spatial) 
+     (feature not yet implemented)
+----""DummyCollection" (type: Spatial) 
+------"Dummy" (type: KineticBody) ClientsidePredictionDummy.gd
+--------"MeshInstance" (type: MeshInstance)
+--------"CollissionShape" (type: CollissionShape)
+
+===Server===
+-root
+--"Player" (type: KineticBody)
+--"DummySpawner" (type: Spatial" DummySpawner.gd
+--"ClientsidePrediction" (type: Spatial) ClientsidePrediction.gd
+  (name can be changed)
+----"DummyFunctions" (type: Spatial) 
+     (feature not yet implemented)
+----""DummyCollection" (type: Spatial) 
+------"Dummy" (type: KineticBody) ClientsidePredictionDummy.gd
+--------"MeshInstance" (type: MeshInstance)
+--------"CollissionShape" (type: CollissionShape)
+
