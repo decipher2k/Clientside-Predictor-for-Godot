@@ -63,8 +63,7 @@ puppet func playAnimation(player:String,animation:String, id,once:bool):
 		n.play(animation)
 
 #Warning! This should be safe concerning the specs. Reomtely injecting code is _allways_ dangerous though.
-#Allways delete this function unless you know what you are doing.
-	# Called when the node enters the scene tree for the first time.
+#Delete this function if you are unsure.
 
 puppet func callFunction(var functionNode, var functionName):
 	var n:Node=get_parent().get_node("DummyFunctions").find_node(functionNode,true,false)
