@@ -109,7 +109,7 @@ puppet func puppetPlayAnimation(animationPlayer,animationName,animationNodeId,on
 			playerNode.oneshot_node_start(animationNodeId)
 	else:
 		if(playerNode.is_class("AnimationPlayer")):
-			var prevAnimation=playerNode.get_queue()[playerNode.get_queue().size()]
+			var prevAnimation=playerNode.get_queue()[playerNode.get_queue().size()-1]
 			playerNode.play(animationName)
 			playerNode.queue(prevAnimation)
 		else:
