@@ -62,7 +62,13 @@ master func master_play_sound(var nodeId, var _sound, var collectionNode, var _s
 	if(get_tree().get_rpc_sender_id()==nodeId):
 		rpc("puppet_play_sound",nodeId,_sound,collectionNode,_soundNodeName)
 		
-puppet func puppet_play_sound(var nodeId, var _sound, var collectionNode, var _soundNodeName):
+puppet func puppet_play_sound(var nodeId, var _sound, var collectionNode, var _soundNodeName):	
+	if(get_parent().get_node_or_null(nodeId)==null):
+		return
+	if(!is_class(ClientsidePredictionDummy)):
+		return
+	if(get_node_or_null(_soundNodeName)==null):
+		return				
 	get_node(_soundNodeName).stream=load(_sound)
 	get_node(_soundNodeName).play()
 	
@@ -72,6 +78,12 @@ func playAnimation(idDummy, player:String,animation:String, id,once:bool):
 
 
 master func animationProxy(idDummy,player:String,animation:String, id,once:bool):
+	if(get_parent().get_node_or_null(idDummy)==null):
+		return
+	if(!is_class(ClientsidePredictionDummy)):
+		return		
+	if(get_node_or_null(player)==null):
+		return				
 	if(get_tree().get_rpc_sender_id()==idDummy):
 		var node=self
 		if(!node.is_class("ClientsidePredictionDummy")):
@@ -80,12 +92,16 @@ master func animationProxy(idDummy,player:String,animation:String, id,once:bool)
 		var i=0
 		while i < peers.size():		
 			if(peers[i]!=ServerNetwork.SERVER_ID):											
-				rpc_id(peers[i],"puppetPlayAnimation",idDummy,player,animation,id,once)							
+				rpc_id(peers[i],"puppetPlayAnimation",idDummy,player,animation,id,once,idDummy)							
 			i=i+1
 
-puppet func puppetPlayAnimation(animationPlayer,animationName,animationNodeId,once):	
+puppet func puppetPlayAnimation(animationPlayer,animationName,animationNodeId,once,idDummy):	
+	if(get_parent().get_node_or_null(idDummy)==null):
+		return		
 	if(!self.is_class("ClientsidePredictionDummy")):
-		pass
+		return
+	if(get_node_or_null(animationPlayer)==null):
+		return				
 	var playerNode:Node =find_node(animationPlayer,true,false)	
 	if(playerNode.is_class("AnimationTreePlayer")):
 		playerNode.animation_node_set_animation (animationNodeId, find_node(animationName,true,false))		
@@ -97,17 +113,35 @@ puppet func puppetPlayAnimation(animationPlayer,animationName,animationNodeId,on
 			playerNode.play(animationName)
 			playerNode.queue(prevAnimation)
 		else:
-			pass
+			return
 
 func set_mesh(var _mesh, var id_node, var _nodeCollection, var _meshNodeName):
+	if(get_parent().get_node_or_null(id_node)==null):
+		return
+	if(!is_class(ClientsidePredictionDummy)):
+		return		
+	if(get_node_or_null(_meshNodeName)==null):
+		return						
 	get_node(_meshNodeName).mesh=load(_mesh)
 	rpc_id(1,"master_set_mesh",id_node,_mesh,_nodeCollection)
 
 master func master_set_mesh(var nodeId, var _mesh, var collectionNode, var _meshNodeName):
+	if(get_parent().get_node_or_null(nodeId)==null):
+		return	
+	if(!is_class(ClientsidePredictionDummy)):
+		return	
+	if(get_node_or_null(_meshNodeName)==null):
+		return				
 	if(get_tree().get_rpc_sender_id()==nodeId):
-		rpc("puppet_set_mesh",_meshNodeName,_mesh)
+		rpc("puppet_set_mesh",_meshNodeName,_mesh,nodeId)
 
-puppet func puppet_set_mesh(var _meshNodeName, var _mesh):
+puppet func puppet_set_mesh(var _meshNodeName, var _mesh, nodeId):
+	if(get_parent().get_node_or_null(nodeId)==null):
+		return	
+	if(!is_class(ClientsidePredictionDummy)):
+		return	
+	if(get_node_or_null(_meshNodeName)==null):
+		return					
 	get_node(_meshNodeName).mesh=load(_mesh)
 	
 func set_speed(var _speed, var id_node, var _nodeCollection):
@@ -115,6 +149,12 @@ func set_speed(var _speed, var id_node, var _nodeCollection):
 	rpc_id(1,"master_set_speed",id_node,_speed,_nodeCollection)
 
 master func master_set_speed(var nodeId, var speed, var collectionNode):
+	if(get_parent().get_node_or_null(nodeId)==null):
+		return	
+	if(!is_class(ClientsidePredictionDummy)):
+		return
+	if(get_node_or_null(collectionNode)==null):
+		return				
 	if(get_tree().get_rpc_sender_id()==nodeId):
 		get_node("/root").find_node(collectionNode,true,false).get_node(nodeId).speed=speed
 
