@@ -21,6 +21,18 @@ Each entity (for example each player entity, each bullet entity etc - not their 
 To modify the avatar the user sees, the corresponding node should be attached to the node called "Dummy".
 That node should be positioned outside the walkable terrain, as it could cause unwanted collissions.
 
+===================================
+
+Dummy states to implement into state machine: (!!! Untested !!! Please write GitHub issue in case of failure)
+
+var dummyNode:ClientsidePredictionDummy=get_tree().find_node("DummyCollection").get_node(nodeID)
+
+Play sound: 	dummyNode.play_sound("res://sound.ogg", nodeID, "DummyCollection", "<SoundNodeName>")
+Play animation:	dummyNode.playAnimation(nodeID, "<AnimationPlayerName>","SomeCoolAnimation", animationNodeId,true):	
+Set mesh:	dummyNode.set_mesh(var "res://mesh",nodeID, "DummyCollection", "<MeshNodeName>"):
+Set speed_	dummyNode.set_speed(0.4, nodeID, "DummyCollection"):
+
+
 =================================
 
 Node Structure:

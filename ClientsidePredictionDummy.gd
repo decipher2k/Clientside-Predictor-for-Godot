@@ -54,20 +54,36 @@ var speed
 #			To spawn an instance of a character, call the DummySpawner node's remote_spawn_dummy function from the server
 
 
-func set_speed(var _speed, var id_node, var _nodeCollection):
-	speed=_speed
-	rpc_id(1,"master_set_speed",id_node,_speed,_nodeCollection)
 
-master func master_set_speed(var nodeId, var speed, var collectionNode):
+func play_sound(var _sound, var id_node, var _nodeCollection, var _soundNodeName):
+	rpc_id(1,"master_play_sound",id_node,_sound,_nodeCollection,_soundNodeName)
+
+master func master_play_sound(var nodeId, var _sound, var collectionNode, var _soundNodeName):
 	if(get_tree().get_rpc_sender_id()==nodeId):
-		get_node("/root").find_node(collectionNode,true,false).get_node(nodeId).speed=speed
-
+		rpc("puppet_play_sound",nodeId,_sound,collectionNode,_soundNodeName)
+		
+puppet func puppet_play_sound(var nodeId, var _sound, var collectionNode, var _soundNodeName):
+	get_node(_soundNodeName).stream=load(_sound)
+	get_node(_soundNodeName).play()
 	
-func is_class(var className):
-	if(className=="ClientsidePredictionDummy"):
-		return true
 
-func playAnimation(animationPlayer,animationName,animationNodeId,once):	
+func playAnimation(idDummy, player:String,animation:String, id,once:bool):	
+	rpc_id(1,"animationProxy",idDummy,player,animation, id,once)
+
+
+master func animationProxy(idDummy,player:String,animation:String, id,once:bool):
+	if(get_tree().get_rpc_sender_id()==idDummy):
+		var node=self
+		if(!node.is_class("ClientsidePredictionDummy")):
+			pass
+		var peers=get_tree().get_network_connected_peers()	
+		var i=0
+		while i < peers.size():		
+			if(peers[i]!=ServerNetwork.SERVER_ID):											
+				rpc_id(peers[i],"puppetPlayAnimation",idDummy,player,animation,id,once)							
+			i=i+1
+
+puppet func puppetPlayAnimation(animationPlayer,animationName,animationNodeId,once):	
 	if(!self.is_class("ClientsidePredictionDummy")):
 		pass
 	var playerNode:Node =find_node(animationPlayer,true,false)	
@@ -82,6 +98,31 @@ func playAnimation(animationPlayer,animationName,animationNodeId,once):
 			playerNode.queue(prevAnimation)
 		else:
 			pass
+
+func set_mesh(var _mesh, var id_node, var _nodeCollection, var _meshNodeName):
+	get_node(_meshNodeName).mesh=load(_mesh)
+	rpc_id(1,"master_set_mesh",id_node,_mesh,_nodeCollection)
+
+master func master_set_mesh(var nodeId, var _mesh, var collectionNode, var _meshNodeName):
+	if(get_tree().get_rpc_sender_id()==nodeId):
+		rpc("puppet_set_mesh",_meshNodeName,_mesh)
+
+puppet func puppet_set_mesh(var _meshNodeName, var _mesh):
+	get_node(_meshNodeName).mesh=load(_mesh)
+	
+func set_speed(var _speed, var id_node, var _nodeCollection):
+	speed=_speed
+	rpc_id(1,"master_set_speed",id_node,_speed,_nodeCollection)
+
+master func master_set_speed(var nodeId, var speed, var collectionNode):
+	if(get_tree().get_rpc_sender_id()==nodeId):
+		get_node("/root").find_node(collectionNode,true,false).get_node(nodeId).speed=speed
+
+	
+func is_class(var className):
+	if(className=="ClientsidePredictionDummy"):
+		return true
+
 
 #Warning! This should be safe concerning the specs. Reomtely injecting code is _allways_ dangerous though.
 #Delete this function if you are unsure.
