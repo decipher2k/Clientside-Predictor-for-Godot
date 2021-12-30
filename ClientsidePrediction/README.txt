@@ -82,6 +82,7 @@ v0.3   -moved spawning of ClientsidePrediction.gd to server, making it being cal
 v0.5   -addes states
 v0.5   -added more sanity checks
 v0.6   -added demo scenes
+v0.6.1 -removed buffer overflow in animations
 
 =================================
 
