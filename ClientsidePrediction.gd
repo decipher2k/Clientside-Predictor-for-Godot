@@ -240,4 +240,8 @@ master func network_update1(pos: Vector3,id: int, rotation: Quat):
 		return
 	get_node("/root").find_node(collectionNodeName,true,false).get_node(str(id)).global_transform.origin=pos
 	if(modeIsCharacterSync):
+		var lockRotationVec=get_node("/root").find_node(collectionNodeName,true,false).get_node(str(id)).lockRotation
+		var x=rotation.get_euler()*lockRotationVec
+		rotation.set_euler(x)
+		var lockRotation=Quat(lockRotationVec.x,lockRotationVec.y,lockRotationVec.z,1.0)
 		get_node("/root").find_node(collectionNodeName,true,false).get_node(str(id)).global_transform.basis=Basis(rotation)

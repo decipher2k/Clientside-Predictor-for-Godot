@@ -59,7 +59,7 @@ func _process(delta):
 #	_AnimationTreeName:	Name of the AnimationTree (can be "" when not using Animation Trees
 #	_collectionName:	Name of the node with the ClientsidePrediction.tscn
 
-func remote_spawn_dummy(var idNode:String, var pos:Vector3, var rota:Quat,var _AnimationTreeName, var _collectionName):
+func remote_spawn_dummy(var idNode:String, var pos:Vector3, var rota:Quat,var _AnimationTreeName, var _collectionName, var _lockRotation):
 
 	if(get_node("/root").find_node(_collectionName,true,false).get_node_or_null(idNode)==null && idNode.to_int()!=get_tree().get_network_unique_id()):
 		var node=get_node("/root").find_node(_collectionName,true,false).get_node("Dummy").duplicate()	
@@ -71,8 +71,9 @@ func remote_spawn_dummy(var idNode:String, var pos:Vector3, var rota:Quat,var _A
 		node.posNetworkTargeted=pos
 		node.posExtrapolated=pos
 		node.AnimationTreeName=_AnimationTreeName		
+		node.lockRotation=_lockRotation
 
-		get_node("/root").find_node(_collectionName,true,false).get_node("Dummy").rpc("spawn_dummy_client",idNode,1,pos,rota, _AnimationTreeName)
+		get_node("/root").find_node(_collectionName,true,false).get_node("Dummy").rpc("spawn_dummy_client",idNode,1,pos,rota, _AnimationTreeName,_lockRotation)
 
 
 

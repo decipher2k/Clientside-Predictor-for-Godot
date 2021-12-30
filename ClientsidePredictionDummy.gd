@@ -45,7 +45,7 @@ var lastRotation: Quat
 var _pos
 var _rota
 var AnimationTreeName
-
+var lockRotation
 #
 #			The dummy node has got to have this script attached,
 #			and it has to be a child node of the _collectionNode.
@@ -79,7 +79,7 @@ func playAnimation(animationPlayer,animationName,animationNodeId,once):
 #	var ref = funcref(n, functionName)
 #	ref.call_func()
 
-puppet func spawn_dummy_client(playerId:String, order:int, var pos:Vector3, var rota:Quat,var _AnimationTreeName):
+puppet func spawn_dummy_client(playerId:String, order:int, var pos:Vector3, var rota:Quat,var _AnimationTreeName, var _lockRotation):
 	if(get_parent().get_node_or_null(playerId)==null &&playerId.to_int()!= get_tree().get_network_unique_id()):
 		var node:Spatial=self.duplicate()
 		node.show()
@@ -90,7 +90,7 @@ puppet func spawn_dummy_client(playerId:String, order:int, var pos:Vector3, var 
 		node.posLast=pos
 		node.posNetworkTargeted=pos
 		node.posExtrapolated=pos
-
+		node.lockRotation=_lockRotation
 func _ready():
 	pass # Replace with function body.
 	
