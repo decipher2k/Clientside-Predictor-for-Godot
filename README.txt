@@ -70,6 +70,7 @@ v0.2: -Seperated client scene from server scene.
       				The player controller for the "Player" node also has to be implemented, it is not included.)
 v0.2.1 -added some sanity checks
 v0.2.2 -parametrized ClientsidePrediction.tscn name in DummySpawner 
+v0.3   -moved spawning of ClientsidePrediction.gd to server, making it being called by ClientsidePredictionSpawner
 
 
 =================================

@@ -178,7 +178,7 @@ func updatePos(playerID: String, delta):
 		var node
 		node=collectionNode.get_node(str(playerID))
 		
-		if(!node. is_class("ClientsidePredictionDummy")):
+		if(!node.is_class("ClientsidePredictionDummy")):
 			return
 		if(node.posExtrapolated!=null):
 			
