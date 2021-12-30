@@ -115,6 +115,22 @@ puppet func _beginCharacterSync3D(var _characterNode, var _collectionNode, var _
 	clamping=_clamping
 	useKeyFrames=_useKeyFrames
 
+master func animationProxy(idDummy,player:String,animation:String, id,once:bool):
+	var peers=get_tree().get_network_connected_peers()	
+	var i=0
+	while i < peers.size():		
+		if(peers[i]!=ServerNetwork.SERVER_ID):											
+			rpc_id(peers[i],"animationPuppet",idDummy,player,animation,id,once)							
+		i=i+1
+
+puppet func animationPuppet(idDummy,player:String,animation:String, id,once:bool):
+	var node=find_node(collectionNodeName,true,false).get_node(idDummy)
+	if(!node.is_class("ClientsidePredictionDummy")):
+		pass
+	node.playAnimation(player,animation,id,once)
+
+func playAnimation(idDummy, player:String,animation:String, id,once:bool):	
+	rpc_id(1,"animationProxy",idDummy,player,animation, id,once)
 
 
 func _physics_process(delta):
