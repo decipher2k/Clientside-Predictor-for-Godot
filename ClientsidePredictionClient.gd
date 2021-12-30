@@ -30,7 +30,7 @@
 #    Programm erhalten haben. Wenn nicht, siehe <https://www.gnu.org/licenses/>.
 
 extends Spatial
-class_name ClientsidePrediction
+class_name ClientsidePredictionClient
 	
 var running:bool=false
 var targetNode
@@ -50,7 +50,7 @@ var clamping
 var characterNodeName
 var useKeyFrames
 var lastFrame:int=OS.get_ticks_msec()
-
+var idPlayer
 #==== ClientsidePrediction.gd====
 #	Note: 	This script should be attached to the _characterNode.
 #
@@ -73,55 +73,31 @@ var lastFrame:int=OS.get_ticks_msec()
 #	_useTarget:		use fixed target instead of character synchronization
 
 func _ready():
+	set_network_master(1)
 	pass
-	
-func get_root(n:Node):
-	if(n.get_parent()):
-		return n
-	else:
-		return get_root(n.get_parent())
-		
-
-func initBegin(var _characterNode, var _collectionNode,  var _tickrate, _targetPosition,_rotator, _clamping,_useKeyFrames, _useTarget):
+			
+puppet func _beginCharacterSync3D(var _speed:float, var _characterNode, var _collectionNode, var _tickrate, var _targetPosition, var _rotator,_clamping,_useKeyFrames,_useTarget):
+	speed=_speed
+	characterNode=get_node("/root").find_node(_characterNode,true,false)
+	if(characterNode==null):
+		pass	
 
 	collectionNode=get_node("/root").find_node(_collectionNode,true,false)
 	if(collectionNode==null):
-		return
-	rotator=_rotator
-	targetPosition=_targetPosition
-	collectionNodeName=_collectionNode
-	if(!_useTarget):
-		modeIsCharacterSync=true
-	tickrate=_tickrate
-	isMaster=true
-	rotator=_rotator
-	#running=true
-	clamping=_clamping
-	useKeyFrames=_useKeyFrames	
-	
-	
-puppet func _beginCharacterSync3D(var _characterNode, var _collectionNode, var _tickrate, var _targetPosition, var _rotator,_clamping,_useKeyFrames,_useTarget):
-	characterNode=get_node("/root").find_node(_characterNode,true,false)
-	if(characterNode==null):
-		return	
-
-	collectionNode=get_node("/root").find_node(_collectionNode,true,false)
+		pass	
+	if(!collectionNode.is_class("Spatial")):
+		pass
 	targetPosition=_targetPosition
 	rotator=_rotator
 	collectionNodeName=_collectionNode
 	modeIsCharacterSync=!_useTarget
 	tickrate=_tickrate
+
 	running=true
 	clamping=_clamping
 	useKeyFrames=_useKeyFrames
+	
 
-master func animationProxy(idDummy,player:String,animation:String, id,once:bool):
-	var peers=get_tree().get_network_connected_peers()	
-	var i=0
-	while i < peers.size():		
-		if(peers[i]!=ServerNetwork.SERVER_ID):											
-			rpc_id(peers[i],"animationPuppet",idDummy,player,animation,id,once)							
-		i=i+1
 
 puppet func animationPuppet(idDummy,player:String,animation:String, id,once:bool):
 	var node=find_node(collectionNodeName,true,false).get_node(idDummy)
@@ -130,7 +106,7 @@ puppet func animationPuppet(idDummy,player:String,animation:String, id,once:bool
 	node.playAnimation(player,animation,id,once)
 
 func playAnimation(idDummy, player:String,animation:String, id,once:bool):	
-	rpc_id(1,"animationProxy",idDummy,player,animation, id,once)
+	get_parent().rpc_id(1,"animationProxy",idDummy,player,animation, id,once)
 
 
 func _physics_process(delta):
@@ -141,42 +117,21 @@ func _physics_process(delta):
 			var i=0
 			while i < collectionNode.get_children().size():
 				if(int(collectionNode.get_children()[i].name)!=get_tree().get_network_unique_id()):
-					var name=collectionNode.get_children()[i].name	
-					if(name!="Dummy"):
-						updatePos(name,delta)			
+					var name=collectionNode.get_children()[i].name				
+					updatePos(name,delta)			
 				i=i+1
 
-func _process(delta):	
-	if(start && !started):
-		started=true		
-		rpc_id(1,"initBegin",speed,characterNodeName,collectionNodeName,tickrate,targetPosition)
-		
-	if(OS.get_ticks_msec()-lastFrame>tickrate):
-		lastFrame=OS.get_ticks_msec()
-		if(get_tree().is_network_server()):	
-			var i=0
-
-			var peers=get_tree().get_network_connected_peers()			
-			while i < peers.size():		
-				if(peers[i]!=ServerNetwork.SERVER_ID):			
-					var y=0								
-					while y < collectionNode.get_children().size():											
-						var a:Spatial
-						a=collectionNode.get_children()[y]
-						rpc_unreliable_id(peers[i],"update_puppets",a.global_transform.origin,Quat(a.global_transform.basis),a.name)
-						y=y+1							
-				i=i+1
-		if(!get_tree().is_network_server() && running):
-			process_movement()
+func _process(delta):					
+	if(!get_tree().is_network_server() && running):
+		process_movement()
 
 func updatePos(playerID: String, delta):
 	if(running):
 		
 		var node
 		node=collectionNode.get_node(str(playerID))
-		
-		if(!node.is_class("ClientsidePredictionDummy")):
-			return
+		if(!node.is_class("KinematicBody")):
+			pass
 		if(node.posExtrapolated!=null):
 			
 			if(node!=null):
@@ -192,53 +147,43 @@ func updatePos(playerID: String, delta):
 					node.posExtrapolated=currentPos		
 
 				if(node.posExtrapolated.distance_to(currentPos)!=0.0):
-					var newSpeed=(node.speed*10.0)/node.posExtrapolated.distance_to(currentPos)
+					var newSpeed=(speed*10.0)/node.posExtrapolated.distance_to(currentPos)
 					var deltaPos=node.posExtrapolated-currentPos
 					
-					newPos=(currentPos+(newSpeed*deltaPos)*delta)
+					if(node.test_move(node.global_transform, deltaPos)):
+						newPos=(currentPos+(newSpeed*deltaPos)*delta)
+					else:
+						newPos=currentPos+Vector3(5.0,5.0,5.0)
 				else:
 					newPos=node.posExtrapolated
 					
-				node.global_transform.basis=Basis(Quat(node.global_transform.basis).slerp(node.lastRotation,0.25))
+				node.global_transform.basis=Basis(Quat(node.global_transform.basis).slerp(node.lastRotation.normalized(),0.25))
 				node.global_transform.origin=newPos
 				
-
 
 puppet func update_puppets(networkPosition,newRotation,id: String):
 
 		if(running):
-			if(collectionNode.get_node_or_null(str(id))==null):
-				return
-			if(!collectionNode.get_node(str(id)).is_class("ClientsidePredictionDummy")):
-				return
-			if(collectionNode.get_node(str(id))!=null && !isMaster):
-				if(collectionNode.get_node(str(id)).lastUpdate==0):
-					collectionNode.get_node(str(id)).lastUpdate=OS.get_ticks_msec()
-					
-				if(!useKeyFrames):
-					collectionNode.get_node(str(id)).posExtrapolated=networkPosition+((networkPosition-collectionNode.get_node(str(id)).posLast))
-				else:
-					if(collectionNode.get_node(str(id)).AnimationTreeName!=null && collectionNode.get_node(str(id)).AnimationTreeName!=""):
+			if(id.to_int()!=get_tree().get_network_unique_id()):
+				if(!collectionNode.get_node(str(id)).is_class("Spatial")):
+					pass
+				if(collectionNode.get_node(str(id))!=null && !isMaster):
+					if(collectionNode.get_node(str(id)).lastUpdate==0):
+						collectionNode.get_node(str(id)).lastUpdate=OS.get_ticks_msec()
+						
+					if(!useKeyFrames):
 						collectionNode.get_node(str(id)).posExtrapolated=networkPosition+((networkPosition-collectionNode.get_node(str(id)).posLast))
-										
-				collectionNode.get_node(str(id)).posNetworkTargeted=networkPosition
-				collectionNode.get_node(str(id)).lastUpdate=OS.get_ticks_msec()
-				collectionNode.get_node(str(id)).lastRotation=newRotation		
-				collectionNode.get_node(str(id)).posLast=collectionNode.get_node(str(id)).global_transform.origin
-	
+					else:
+						if(collectionNode.get_node(str(id)).AnimationTreeName!=null && collectionNode.get_node(str(id)).AnimationTreeName!=""):
+							collectionNode.get_node(str(id)).posExtrapolated=networkPosition+((networkPosition-collectionNode.get_node(str(id)).posLast))
+											
+					collectionNode.get_node(str(id)).posNetworkTargeted=networkPosition
+					collectionNode.get_node(str(id)).lastUpdate=OS.get_ticks_msec()
+					collectionNode.get_node(str(id)).lastRotation=newRotation		
+					collectionNode.get_node(str(id)).posLast=collectionNode.get_node(str(id)).global_transform.origin
+		
 func process_movement():
 	if(modeIsCharacterSync):
-		rpc_unreliable_id(ServerNetwork.SERVER_ID,"network_update1", characterNode.global_transform.origin,get_tree().get_network_unique_id(),Quat(get_node("/root").find_node(rotator,true,false).global_transform.basis))
+		get_parent().rpc_unreliable_id(ServerNetwork.SERVER_ID,"network_update1", characterNode.global_transform.origin,get_tree().get_network_unique_id(),Quat(get_node("/root").find_node(rotator,true,false).global_transform.basis).normalized())
 	else:
-		rpc_unreliable_id(ServerNetwork.SERVER_ID,"network_update1", targetPosition,get_tree().get_network_unique_id(),Quat(get_node("/root").find_node(collectionNodeName,true,false).get_node(str(get_tree().get_network_unique_id())).global_transform.basis))
-			
-master func network_update1(pos: Vector3,id: int, rotation: Quat):	
-	if(!get_node("/root").find_node(collectionNodeName,true,false).get_node(str(id)).is_class("ClientsidePredictionDummy")):
-		return
-	get_node("/root").find_node(collectionNodeName,true,false).get_node(str(id)).global_transform.origin=pos
-	if(modeIsCharacterSync):
-		var lockRotationVec=get_node("/root").find_node(collectionNodeName,true,false).get_node(str(id)).lockRotation
-		var x=rotation.get_euler()*lockRotationVec
-		rotation.set_euler(x)
-		var lockRotation=Quat(lockRotationVec.x,lockRotationVec.y,lockRotationVec.z,1.0)
-		get_node("/root").find_node(collectionNodeName,true,false).get_node(str(id)).global_transform.basis=Basis(rotation)
+		get_parent().rpc_unreliable_id(ServerNetwork.SERVER_ID,"network_update1", targetPosition,get_tree().get_network_unique_id(),Quat(get_node("/root").find_node(collectionNodeName,true,false).get_node(str(get_tree().get_network_unique_id())).global_transform.basis))	

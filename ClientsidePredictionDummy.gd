@@ -46,11 +46,19 @@ var _pos
 var _rota
 var AnimationTreeName
 var lockRotation
+var speed
 #
 #			The dummy node has got to have this script attached,
 #			and it has to be a child node of the _collectionNode.
 #			To spawn an instance of a character, call the DummySpawner node's remote_spawn_dummy function from the server
 
+func set_speed(var _speed):
+	speed=_speed
+	rpc_id(1,"master_set_speed",_speed)
+	
+master func master_set_speed(var _speed):
+	speed=_speed
+	
 func is_class(var className):
 	if(className=="ClientsidePredictionDummy"):
 		return true
@@ -79,13 +87,14 @@ func playAnimation(animationPlayer,animationName,animationNodeId,once):
 #	var ref = funcref(n, functionName)
 #	ref.call_func()
 
-puppet func spawn_dummy_client(playerId:String, order:int, var pos:Vector3, var rota:Quat,var _AnimationTreeName, var _lockRotation):
+puppet func spawn_dummy_client(_speed: float,playerId:String, order:int, var pos:Vector3, var rota:Quat,var _AnimationTreeName, var _lockRotation):
 	if(get_parent().get_node_or_null(playerId)==null &&playerId.to_int()!= get_tree().get_network_unique_id()):
 		var node:Spatial=self.duplicate()
 		node.show()
 		var s:Script=get_script()
 		get_parent().add_child(node)		
 		node.name=str(playerId)	
+		node.speed=_speed
 		node.lastRotation=rota
 		node.posLast=pos
 		node.posNetworkTargeted=pos

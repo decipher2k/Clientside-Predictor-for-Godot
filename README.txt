@@ -57,7 +57,6 @@ Node Structure:
 ToDo:
 -individual nodes per player, if possible. If not, individual meshes.
 -callback functions for the "Dummy" nodes
--lock rotation
 -add a function to modify speed during runtime withouth restart
 -add animation and sound
 
