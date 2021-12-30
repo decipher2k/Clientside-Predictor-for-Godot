@@ -51,6 +51,10 @@ var AnimationTreeName
 #			and it has to be a child node of the _collectionNode.
 #			To spawn an instance of a character, call the DummySpawner node's remote_spawn_dummy function from the server
 
+func is_class(var className):
+	if(className=="ClientsidePredictionDummy"):
+		return true
+
 func playAnimation(animationPlayer,animationName,animationNodeId,once):	
 	if(!self.is_class("ClientsidePredictionDummy")):
 		pass

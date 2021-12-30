@@ -102,22 +102,21 @@ func initBegin(var _speed:float, var _characterNode, var _collectionNode,  var _
 	
 
 	
-remote func _beginCharacterSync3D(var _speed:float, var _characterNode, var _collectionNode, var _tickrate, var _targetPosition, var _rotator,_clamping,_useKeyFrames,_useTarget):
-	if(get_tree().is_network_server() && get_tree().get_rpc_sender_id()==1):
-		speed=_speed
-		characterNode=get_node("/root").find_node(_characterNode,true,false)
-		if(characterNode==null):
-			return	
+puppet func _beginCharacterSync3D(var _speed:float, var _characterNode, var _collectionNode, var _tickrate, var _targetPosition, var _rotator,_clamping,_useKeyFrames,_useTarget):
+	speed=_speed
+	characterNode=get_node("/root").find_node(_characterNode,true,false)
+	if(characterNode==null):
+		return	
 
-		collectionNode=get_node("/root").find_node(_collectionNode,true,false)
-		targetPosition=_targetPosition
-		rotator=_rotator
-		collectionNodeName=_collectionNode
-		modeIsCharacterSync=!_useTarget
-		tickrate=_tickrate
-		running=true
-		clamping=_clamping
-		useKeyFrames=_useKeyFrames
+	collectionNode=get_node("/root").find_node(_collectionNode,true,false)
+	targetPosition=_targetPosition
+	rotator=_rotator
+	collectionNodeName=_collectionNode
+	modeIsCharacterSync=!_useTarget
+	tickrate=_tickrate
+	running=true
+	clamping=_clamping
+	useKeyFrames=_useKeyFrames
 
 master func animationProxy(idDummy,player:String,animation:String, id,once:bool):
 	var peers=get_tree().get_network_connected_peers()	
@@ -145,8 +144,9 @@ func _physics_process(delta):
 			var i=0
 			while i < collectionNode.get_children().size():
 				if(int(collectionNode.get_children()[i].name)!=get_tree().get_network_unique_id()):
-					var name=collectionNode.get_children()[i].name				
-					updatePos(name,delta)			
+					var name=collectionNode.get_children()[i].name	
+					if(name!="Dummy"):
+						updatePos(name,delta)			
 				i=i+1
 
 func _process(delta):	
