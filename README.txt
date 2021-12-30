@@ -24,6 +24,8 @@ That node should be positioned outside the walkable terrain, as it could cause u
 ===================================
 
 Dummy states to implement into state machine: (!!! Untested !!! Please write GitHub issue in case of failure)
+These have to be called from the client. Only states of nodes with client's ID can be changed, and the
+states will be replicated over the network.
 
 var dummyNode:ClientsidePredictionDummy=get_tree().find_node("DummyCollection").get_node(nodeID)
 
