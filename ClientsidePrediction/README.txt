@@ -68,12 +68,6 @@ Node Structure:
 --------"MeshInstance" (type: MeshInstance)
 --------"CollissionShape" (type: CollissionShape)
 
-=================================
-
-ToDo:
--individual nodes per player, if possible. If not, individual meshes.
--callback functions for the "Dummy" nodes
--add animation and sound
 
 =================================
 
