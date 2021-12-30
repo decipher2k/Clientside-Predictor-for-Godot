@@ -10,6 +10,7 @@ Do youn need an 3D artist or a gamedev? In that case, please send a mail to gith
 
 
 Usage (all functions have to be called from the server):
+playerId has to be the string representation of the unique network id.
 
 	var target:Vector3=Vector3(100.0,0.0,100.0)
 	var lockRotation:Vector3=Vector3(0.0,1.0,1.0)
