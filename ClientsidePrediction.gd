@@ -177,7 +177,8 @@ func updatePos(playerID: String, delta):
 		
 		var node
 		node=collectionNode.get_node(str(playerID))
-		if(!node.is_class("ClientsidePredictionDummy")):
+		
+		if(!node. is_class("ClientsidePredictionDummy")):
 			return
 		if(node.posExtrapolated!=null):
 			
@@ -234,7 +235,7 @@ func process_movement():
 	else:
 		rpc_unreliable_id(ServerNetwork.SERVER_ID,"network_update1", targetPosition,get_tree().get_network_unique_id(),Quat(get_node("/root").find_node(collectionNodeName,true,false).get_node(str(get_tree().get_network_unique_id())).global_transform.basis))
 			
-master func network_update1(pos: Vector3,id: int, rotation):	
+master func network_update1(pos: Vector3,id: int, rotation: Quat):	
 	if(!get_node("/root").find_node(collectionNodeName,true,false).get_node(str(id)).is_class("ClientsidePredictionDummy")):
 		return
 	get_node("/root").find_node(collectionNodeName,true,false).get_node(str(id)).global_transform.origin=pos
