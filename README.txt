@@ -12,9 +12,10 @@ Do youn need an 3D artist or a gamedev? In that case, please send a mail to gith
 Usage (all functions have to be called from the server):
 
 	var target:Vector3=Vector3(100.0,0.0,100.0)
-	get_parent().find_node("DummySpawner",true,false).remote_spawn_dummy(str(playerId),Vector3(0,0,0),Quat(0.0,0.0,0.0,0.0),"","DummyCollection")	
-	get_parent().find_node("ClientsidePrediction",true,false).get_node("Spatial").initBegin(0.4,"Player","DummyCollection", 30.0,target,"Camera",5.0,false,false)
-	get_parent().find_node("ClientsidePrediction",true,false).initBegin(0.4,"Player","DummyCollection", 30.0,target,"Camera",5.0,false,false)
+	var lockRotation:Vector3=Vector3(0.0,1.0,1.0)
+	get_parent().find_node("DummySpawner",true,false).remote_spawn_dummy(0.4,str(playerId),Vector3(0,0,0),Quat(0.0,0.0,0.0,0.0),"","DummyCollection",lockRotation)	
+	get_parent().get_root().get_node("ClientsidePredictionSpawner").initBegin("Player","DummyCollection", 30.0,target,"Camera",5.0,false,false)
+	get_parent().find_node("ClientsidePrediction",true,false).initBegin("Player","DummyCollection", 30.0,target,"Camera",5.0,false,false)
 	
 Each entity (for example each player entity, each bullet entity etc - not their instances!) has to have its own ClientsidePrediction node (you will have to rename it in order to use more than one entity.)
 To modify the avatar the user sees, the corresponding node should be attached to the node called "Dummy".
@@ -27,12 +28,12 @@ Node Structure:
 ===Client===
 -root
 --"Player" (type: KineticBody) - has to have the player controller script attached
-   (name can be changed)
+  (name can be changed for more entities)
 --"ClientsidePrediction" (type: Spatial) ClientsidePrediction.gd
-  (name can be changed)
+  (name can be changed for more entities)
 ----"DummyFunctions" (type: Spatial) 
      (feature not yet implemented)
-----""DummyCollection" (type: Spatial) 
+----""DummyCollection" (type: Spatial)
 ------"Dummy" (type: KineticBody) ClientsidePredictionDummy.gd
 --------"MeshInstance" (type: MeshInstance)
 --------"CollissionShape" (type: CollissionShape)
@@ -40,14 +41,15 @@ Node Structure:
 ===Server===
 -root
 --"Player" (type: KineticBody)
-  (name can be changed)
+  (name can be changed for more entities)
 --"DummySpawner" (type: Spatial) DummySpawner.gd
 --"ClientsidePredictionSpawner" (Type: Spatial) ClientsidePredictionSpawner.gd
 --"ClientsidePrediction" (type: Spatial) ClientsidePrediction.gd
-  (name can be changed)
+   (name can be changed for more entities)
 ----"DummyFunctions" (type: Spatial) 
      (feature not yet implemented)
 ----"DummyCollection" (type: Spatial) 
+    (name can be changed for more entities)
 ------"Dummy" (type: KineticBody) ClientsidePredictionDummy.gd
 --------"MeshInstance" (type: MeshInstance)
 --------"CollissionShape" (type: CollissionShape)
@@ -57,7 +59,6 @@ Node Structure:
 ToDo:
 -individual nodes per player, if possible. If not, individual meshes.
 -callback functions for the "Dummy" nodes
--add a function to modify speed during runtime withouth restart
 -add animation and sound
 
 =================================

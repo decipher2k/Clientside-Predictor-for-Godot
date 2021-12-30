@@ -47,17 +47,21 @@ var _rota
 var AnimationTreeName
 var lockRotation
 var speed
+
 #
 #			The dummy node has got to have this script attached,
 #			and it has to be a child node of the _collectionNode.
 #			To spawn an instance of a character, call the DummySpawner node's remote_spawn_dummy function from the server
 
-func set_speed(var _speed):
+
+func set_speed(var _speed, var id_node, var _nodeCollection):
 	speed=_speed
-	rpc_id(1,"master_set_speed",_speed)
-	
-master func master_set_speed(var _speed):
-	speed=_speed
+	rpc_id(1,"master_set_speed",id_node,_speed,_nodeCollection)
+
+master func master_set_speed(var nodeId, var speed, var collectionNode):
+	if(get_tree().get_rpc_sender_id()==nodeId):
+		get_node("/root").find_node(collectionNode,true,false).get_node(nodeId).speed=speed
+
 	
 func is_class(var className):
 	if(className=="ClientsidePredictionDummy"):
