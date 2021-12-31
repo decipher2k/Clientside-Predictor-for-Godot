@@ -85,6 +85,7 @@ v0.5   -added more sanity checks
 v0.6   -added demo scenes
 v0.6.1 -removed buffer overflow in animations
 v0.6.2 -added missing player controller to demo scene
+v0.6.3 -repaired scenes
 
 =================================
 
