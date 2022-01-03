@@ -115,24 +115,6 @@ puppet func _beginCharacterSync3D(var _characterNode, var _collectionNode, var _
 	clamping=_clamping
 	useKeyFrames=_useKeyFrames
 
-master func animationProxy(idDummy,player:String,animation:String, id,once:bool):
-	var peers=get_tree().get_network_connected_peers()	
-	var i=0
-	while i < peers.size():		
-		if(peers[i]!=ServerNetwork.SERVER_ID):											
-			rpc_id(peers[i],"animationPuppet",idDummy,player,animation,id,once)							
-		i=i+1
-
-puppet func animationPuppet(idDummy,player:String,animation:String, id,once:bool):
-	var node=find_node(collectionNodeName,true,false).get_node(idDummy)
-	if(!node.is_class("ClientsidePredictionDummy")):
-		pass
-	node.playAnimation(player,animation,id,once)
-
-func playAnimation(idDummy, player:String,animation:String, id,once:bool):	
-	rpc_id(1,"animationProxy",idDummy,player,animation, id,once)
-
-
 func _physics_process(delta):
 	if(running):	
 		if(!get_tree().is_network_server()):
@@ -147,10 +129,7 @@ func _physics_process(delta):
 				i=i+1
 
 func _process(delta):	
-	if(start && !started):
-		started=true		
-		rpc_id(1,"initBegin",speed,characterNodeName,collectionNodeName,tickrate,targetPosition)
-		
+
 	if(OS.get_ticks_msec()-lastFrame>tickrate):
 		lastFrame=OS.get_ticks_msec()
 		if(get_tree().is_network_server()):	
@@ -240,5 +219,5 @@ master func network_update1(pos: Vector3,id: int, rotation: Quat):
 		var lockRotationVec=get_node("/root").find_node(collectionNodeName,true,false).get_node(str(id)).lockRotation
 		var x=rotation.get_euler()*lockRotationVec
 		rotation.set_euler(x)
-		var lockRotation=Quat(lockRotationVec.x,lockRotationVec.y,lockRotationVec.z,1.0)
+		
 		get_node("/root").find_node(collectionNodeName,true,false).get_node(str(id)).global_transform.basis=Basis(rotation)
